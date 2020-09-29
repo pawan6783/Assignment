@@ -15,12 +15,17 @@ public class StaticDemoTest {
 	
 	@Test
 	public void Test1() {
-		
+	    Student.setCollege("Bansal");
+	    
+	    assertEquals("Bansal", Student.getCollege());
 	}
 	
 	@Test
 	public void Test2() {
+		Student s1 = new Student(5, "harry");
+		s1.setCollege("IET");
 		
+		assertEquals("IET", s1.getCollege());
 	}
 }
 
