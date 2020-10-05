@@ -25,7 +25,7 @@ public class CheckDemo {
 		System.out.println(c.str3);
 		System.out.println(c.str4);
 		
-		//all members are accessible indirectly
+		//all members are accessible indirectly in the same package
 		c.display();
 	}
 
