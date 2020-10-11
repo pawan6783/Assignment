@@ -1,7 +1,9 @@
 package com.example.Collections2;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -86,33 +88,26 @@ public class SavingAccountDemo{
 			System.out.println("AccountID: "+it.getAccountID()+" AccountHolder: "+it.getAccountHolderName()+" isSalaryAccount: "+it.isSalaryAccount()+" AccoutBalance: "+it.getAccountBalance());
 		}
 		
-		try {
-			FileOutputStream fos = new FileOutputStream("accounts.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
+		
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("accounts.txt"))){		
 			oos.writeObject(accountList);
-			oos.flush();
-			oos.close();
-			
-			FileInputStream fis = new FileInputStream("accounts.txt");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			ArrayList<SavingAccount> readlist = (ArrayList<SavingAccount>) ois.readObject();
-			
-			System.out.println("data read from file:");
-			for(SavingAccount it : readlist) {
-				System.out.println("AccountID: "+it.getAccountID()+" AccountHolder: "+it.getAccountHolderName()+" isSalaryAccount: "+it.isSalaryAccount()+" AccoutBalance: "+it.getAccountBalance());
-
-				ois.close();
-			}
 		}
-		catch (IOException e) {
+		catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("File opening or closing error");
-			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
-			// TODO: handle exception
-			System.out.println("class not found");
+			System.out.println("error while writting to file");
 		}
 		
+		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("accounts.txt"))){		
+			ArrayList<SavingAccount> readList = (ArrayList<SavingAccount>)ois.readObject();
+			
+			System.out.println("Data read from file:");
+			for(SavingAccount it : readList) {
+				System.out.println("AccountID: "+it.getAccountID()+" AccountHolder: "+it.getAccountHolderName()+" isSalaryAccount: "+it.isSalaryAccount()+" AccoutBalance: "+it.getAccountBalance());
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("error while reading file");
+		}
 	}
 }
